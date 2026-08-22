@@ -725,9 +725,9 @@ while True:
                 up_hover(-4, -4)
                 if(len(cur_cards) == 1):
                     dr_sel2()
-                elif(len(cur_cards) == 2 and cur_cards[0][0] <= 3):
+                elif(len(cur_cards) == 2 and cur_cards[0][0] <= 3 and cur_cards[0][0] != 1):
                     dr_sel3()
-                elif(len(cur_cards) == 3 and cur_cards[0][0] <= 2):
+                elif(len(cur_cards) == 3 and cur_cards[0][0] <= 2 and cur_cards[0][0] != 1):
                     dr_sel4()
                 else:
                     con_atk()
