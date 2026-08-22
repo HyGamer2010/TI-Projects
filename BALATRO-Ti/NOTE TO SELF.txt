@@ -1,1 +1,0 @@
-fix 37 - 40 to go from type == 2 to type == 0
