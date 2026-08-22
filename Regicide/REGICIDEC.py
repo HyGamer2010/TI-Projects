@@ -225,7 +225,7 @@ def up_hover(dx, dy):
 
 def dr_bg(sect = 0):
     d.set_color(118, 159, 151)
-    f(-1, (-1 if sect == 0 else 90), 321, 211)
+    f(-1, (-1 if sect == 0 else 115), 321, 211)
 
 def draw_suit_icons():
     d.set_color(255, 255, 255)
@@ -371,7 +371,7 @@ def dr_sel1():
     w_t("CAN", 15, 169, True)
     w_t("CON", 207, 169, True)
 
-def dr_sel2():
+def dr_sel(i):
     global sel_cards
     sel_cards = []
     d.set_color(255,255,255)
@@ -381,40 +381,19 @@ def dr_sel2():
                 continue
             f(12 + (x * 48), 121 + (y * 23), 25, 13)
     a_s = [heart, diamond, club, spade]
-    a_s.remove(cur_cards[0][1])
-    sel_cards.append(([(2, a_s[0]), (2, a_s[1]), (2, a_s[2])] if cur_cards[0][0] == 2 else [(3, a_s[0]), (3, a_s[1]), (3, a_s[2])] if cur_cards[0][0] == 3 else [(4, a_s[0]), (4, a_s[1]), (4, a_s[2])] if cur_cards[0][0] == 4 else [(5, a_s[0]), (5, a_s[1]), (5, a_s[2])] if cur_cards[0][0] == 5 else []))
-    sel_cards.append([(1, 0), (1,1), (1,2), (1,3)])
-    dr_sel_cards()
-
-def dr_sel3():
-    global sel_cards
-    sel_cards = []
-    d.set_color(255,255,255)
-    for x in range(4):
-        for y in range(3):
-            if(y == 2 and (x == 1 or x == 2)):
-                continue
-            f(12 + (x * 48), 121 + (y * 23), 25, 13)
-    a_s = [heart, diamond, club, spade]
-    a_s.remove(cur_cards[0][1])
-    a_s.remove(cur_cards[1][1])
-    sel_cards.append(([(2, a_s[0]), (2, a_s[1])] if cur_cards[0][0] == 2 else [(3, a_s[0]), (3, a_s[1])] if cur_cards[0][0] == 3 else []))
-    dr_sel_cards()
-
-def dr_sel4():
-    global sel_cards
-    sel_cards = []
-    d.set_color(255,255,255)
-    for x in range(4):
-        for y in range(3):
-            if(y == 2 and (x == 1 or x == 2)):
-                continue
-            f(12 + (x * 48), 121 + (y * 23), 25, 13)
-    a_s = [heart, diamond, club, spade]
-    a_s.remove(cur_cards[0][1])
-    a_s.remove(cur_cards[1][1])
-    a_s.remove(cur_cards[2][1])
-    sel_cards.append([(2, a_s[0])])
+    if(i == 2):
+        a_s.remove(cur_cards[0][1])
+        sel_cards.append(([(2, a_s[0]), (2, a_s[1]), (2, a_s[2])] if cur_cards[0][0] == 2 else [(3, a_s[0]), (3, a_s[1]), (3, a_s[2])] if cur_cards[0][0] == 3 else [(4, a_s[0]), (4, a_s[1]), (4, a_s[2])] if cur_cards[0][0] == 4 else [(5, a_s[0]), (5, a_s[1]), (5, a_s[2])] if cur_cards[0][0] == 5 else []))
+        sel_cards.append([(1, 0), (1,1), (1,2), (1,3)])
+    elif(i == 3):
+        a_s.remove(cur_cards[0][1])
+        a_s.remove(cur_cards[1][1])
+        sel_cards.append(([(2, a_s[0]), (2, a_s[1])] if cur_cards[0][0] == 2 else [(3, a_s[0]), (3, a_s[1])] if cur_cards[0][0] == 3 else []))
+    elif(i == 4):
+        a_s.remove(cur_cards[0][1])
+        a_s.remove(cur_cards[1][1])
+        a_s.remove(cur_cards[2][1])
+        sel_cards.append([(2, a_s[0])])
     dr_sel_cards()
 
 def dr_sel_cards():
@@ -497,7 +476,8 @@ dr_bg()
 draw_suit_icons()
 up_hover(0, 0)
 
-while True:
+playing = True
+while playing:
     d.set_color(0, 0, 0)
     key = s.wait_key()
     clr_hover()
@@ -526,18 +506,18 @@ while True:
                 cur_cards.append((num + 1, sel_suit))
                 dr_bg(1)
                 set_grp("Sel2")
-                dr_sel2()
+                dr_sel(2)
         elif(c_grp == "Sel2"):
             if(c_ho[1] != 2):
                 cur_cards.append(sel_cards[c_ho[1]][c_ho[0]])
                 clr_hover()
                 up_hover(-4, -4)
                 if(len(cur_cards) == 1):
-                    dr_sel2()
-                elif(len(cur_cards) == 2 and cur_cards[0][0] <= 3):
-                    dr_sel3()
-                elif(len(cur_cards) == 3 and cur_cards[0][0] <= 2):
-                    dr_sel4()
+                    dr_sel(2)
+                elif(len(cur_cards) == 2 and cur_cards[0][0] <= 3 and cur_cards[0][0] != 1):
+                    dr_sel(3)
+                elif(len(cur_cards) == 3 and cur_cards[0][0] <= 2 and cur_cards[0][0] != 1):
+                    dr_sel(4)
                 else:
                     con_atk()
 
@@ -549,6 +529,11 @@ while True:
                 dr_bg(1)
             elif(c_ho[0] == len(hovers[c_grp][c_ho[1]]) - 1):
                 con_atk()
+del letters_bg
+del letters_sm
+del hovers
+del cur_cards
+del sel_cards
 
 
 
