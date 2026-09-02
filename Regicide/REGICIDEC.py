@@ -446,7 +446,7 @@ def con_atk():
         base_dmg += (c[0] if c[0] < j else 10 if c[0] == j else 15 if c[0] == q else 20)
         suits.append(c[1])
     if(spade in suits and (c_b[1] != spade or negated)):
-        c_at -= base_dmg
+        c_at = max(c_at - base_dmg, 0)
     if(club in suits and (c_b[1] != club or negated)):
         base_dmg *= 2
     c_he -= base_dmg

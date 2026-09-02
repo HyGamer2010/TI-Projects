@@ -1,0 +1,7 @@
+Instead of smooth, linear movement, I store the map as a bunch of static screens that the player can move between using a pointer. Like each screen would have a list of exits/movement areas if the room is too big for it. When choosing the screen, it would draw the next screen and draw the player standing from the way they came from(maybe just show room, unsure). Every time you move screens, you have a chance for an encounter. Would show [!] in the middle of the screen or something like that
+
+I could store rooms as (sprite_index, [exits]) -> binary. Probably store the sprite index as a 7 bit string allowing for 128 total sprites if needed
+
+could store the player sprite as "player" or "frisk" in the lookup table as well as all enemies(froggit, toriel, etc)
+
+could store interactions/dialogue in a seperate lookup table that has the number of each room with interactables/dialogue in it and check to see if it has the room in it when generating room, and if so, do stuff
