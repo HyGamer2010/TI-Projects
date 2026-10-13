@@ -83,13 +83,17 @@ while True:
     divisor = 2 * a
 
     if(is_complex or radical[1] != 1):
-        gcd = m_gcd(radical[0], b, divisor)
+        gcd = m_gcd(radical[0], -b, divisor)
 
         if(gcd != 1):
             radical[0] /= gcd
             b /= gcd
             divisor /= gcd
-        print("(" + (str(-b) + "+" if b != 0 else "") + ("(" if radical[1] > 1 else "") + (str(radical[0]) + "*" if radical[0] != 1 else "") + ("i" if is_complex else "") + ("*sqrt(" + str(radical[1]) + ")" if radical[1] > 1 else "") + ")" + ("/" + str(divisor) if divisor > 1 else "") + ",(" + (str(-b) + "-" if b != 0 else "") + ("(" if radical[1] > 1 else "") + (str(radical[0]) + "*" if radical[0] != 1 else "") + ("i" if is_complex else "") + ("*sqrt(" + str(radical[1]) + ")" if radical[1] > 1 else "") + ")" + ("/" + str(divisor) if divisor > 1 else ""))
+        if(divisor < 0):
+            b *= -1
+            divisor *= -1
+
+        print("(" + (str(-b) + "+" if b != 0 else "") + ("(" if radical[1] > 1 else "") + (str(radical[0]) + "*" if radical[0] != 1 else "") + ("i*" if is_complex else "") + ("sqrt(" + str(radical[1]) + ")" if radical[1] > 1 else "") + ")" + ("/" + str(divisor) if divisor > 1 else "") + ",(" + (str(-b) + "-" if b != 0 else "") + ("(" if radical[1] > 1 else "") + (str(radical[0]) + "*" if radical[0] != 1 else "") + ("i*" if is_complex else "") + ("sqrt(" + str(radical[1]) + ")" if radical[1] > 1 else "") + ")" + ("/" + str(divisor) if divisor > 1 else ""))
     else:
         pos_div = divisor
         pos_num = -b + radical[0]
