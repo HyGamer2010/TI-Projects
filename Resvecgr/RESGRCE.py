@@ -245,11 +245,20 @@ def components_to_name(components):
         direction = "NORTH" if components[1] > 0 else "EAST" if components[0] > 0 else "SOUTH" if components[1] < 0 else "WEST"
         return [str(res_magnitude) + " UNITS " + direction]
 
+def calc_vec(angle, magnitude):
+    return [magnitude * math.cos(angle), magnitude * math.sin(angle)]
+
 def draw_vec(startpt, components, scalar):
     startpt = [int(startpt[0] * scalar + 118), int(-startpt[1] * scalar + 71)]
     endpt = [int(startpt[0] + components[0] * scalar), int(startpt[1] - components[1] * scalar)]
 
     ti_draw.draw_line(startpt[0], startpt[1], endpt[0], endpt[1])
+
+    vec_angle = math.atan2(components[1], components[0])
+
+    arrow_parts = [calc_vec(vec_angle + math.pi/4, 6), calc_vec(vec_angle - math.pi/4, 6)]
+    for part in arrow_parts:
+        ti_draw.draw_line(endpt[0], endpt[1], endpt[0] - part[0], endpt[1] + part[1])
 
 def w_t(text : str, x, y):
     curX = x

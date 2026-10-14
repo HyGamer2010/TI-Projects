@@ -245,11 +245,20 @@ def components_to_name(components):
         direction = "NORTH" if components[1] > 0 else "EAST" if components[0] > 0 else "SOUTH" if components[1] < 0 else "WEST"
         return [str(res_magnitude) + " UNITS " + direction]
 
+def calc_vec(angle, magnitude):
+    return [magnitude * math.cos(angle), magnitude * math.sin(angle)]
+
 def draw_vec(startpt, components, scalar):
     startpt = [int(startpt[0] * scalar + 159), int(-startpt[1] * scalar + 95)]
     endpt = [int(startpt[0] + components[0] * scalar), int(startpt[1] - components[1] * scalar)]
 
     ti_draw.draw_line(startpt[0], startpt[1], endpt[0], endpt[1])
+
+    vec_angle = math.atan2(components[1], components[0])
+
+    arrow_parts = [calc_vec(vec_angle + math.pi/4, 7.5), calc_vec(vec_angle - math.pi/4, 7.5)]
+    for part in arrow_parts:
+        ti_draw.draw_line(endpt[0], endpt[1], endpt[0] - part[0], endpt[1] + part[1])
 
 def w_t(text : str, x, y):
     curX = x
@@ -270,70 +279,224 @@ def w_t(text : str, x, y):
                     print(char)
         curX += 6
 
-while(True):
+def get_input():
+    key = ti_system.wait_key()
+    if(key == 92):
+        return 1
+    elif(key == 93):
+        return 2
+    elif(key == 94):
+        return 3
+    elif(key == 82):
+        return 4
+    elif(key == 83):
+        return 5
+    elif(key == 84):
+        return 6
+    elif(key == 72):
+        return 7
+    elif(key == 73):
+        return 8
+    elif(key == 74):
+        return 9
+    elif(key == 102):
+        return 0
+    elif(key == 103):
+        return "."
+    elif(key == 26):
+        return "RIGHT"
+    elif(key == 24):
+        return "LEFT"
+    elif(key == 25):
+        return "UP"
+    elif(key == 34):
+        return "DOWN"
+    elif(key == 105):
+        return "ENTER"
+    elif(key == 23):
+        return "BACKSPACE"
+    elif(key == 45):
+        return "CLEAR"
+
+def text_box(text:str, starting_line, col):
+    lines = text.count("|") + 1
+
+    ti_draw.set_color(255, 255, 255)
+    ti_draw.fill_rect(2, 180 + starting_line * 8, 315, lines * 8 + 1)
+
+    ti_draw.set_color(*col)
+    w_t(text, 3, 181 + starting_line * 8)
+
+def get_numeric_input_str(writing_line, col):
+    ans_str = ""
+    while True:
+        pressed = get_input()
+        if(type(pressed) is int or pressed == "."):
+            ans_str += str(pressed)
+        elif(pressed == "BACKSPACE"):
+            ans_str = ans_str[:len(ans_str) - 1]
+        elif(pressed == "ENTER"):
+            return ans_str
+        text_box(ans_str, writing_line, col)
+
+def yes_no_sel(starting_line, col):
+    text_box("Y  N", starting_line, col)
+    sel_on_first = True
+    while True:
+        if(sel_on_first):
+            ti_draw.set_color(*col)
+        else:
+            ti_draw.set_color(255, 255, 255)
+        ti_draw.fill_rect(2, 188 + starting_line * 8, 6, 2)
+
+        if(not sel_on_first):
+            ti_draw.set_color(*col)
+        else:
+            ti_draw.set_color(255, 255, 255)
+        ti_draw.fill_rect(20, 188 + starting_line * 8, 6, 2)
+
+        pressed = get_input()
+        if(pressed == "RIGHT" or pressed == "LEFT"):
+            sel_on_first = not sel_on_first
+        elif(pressed == "ENTER"):
+            return sel_on_first
+
+def clear_text_box():
+    ti_draw.set_color(255, 255, 255)
+    ti_draw.fill_rect(2, 180, 315, 50)
+
+def clear_cartesian():
+    ti_draw.set_color(255, 255, 255)
+    ti_draw.fill_rect(77, 13, 165, 165)
+    ti_draw.set_color(0, 0, 0)
+    ti_draw.fill_rect(158, 15, 3, 161)
+    ti_draw.fill_rect(79, 94, 161, 3)
+
+while True:
+    cur_vec = 0
+
     vecs = []
-    first_vec = True
-    last_vec = False
     components = [0, 0]
     largest_components = [0, 0]
-    while(not last_vec):
-        magnitude = float(input("What is the length of the vector?\n"))
-        on_axis = input("Does your angle lie on an axis?\n1: Yes\n2: No\n") == "1"
-        if(on_axis):
-            direction = input("What axis does it lie on?\n1. North\n2. East\n3. South\n4. West\n")
-            if(direction == "1"):
-                components[1] += magnitude
-                vecs.append([0, magnitude])
-            elif(direction == "2"):
-                components[0] += magnitude
-                vecs.append([magnitude, 0])
-            elif(direction == "3"):
-                components[1] -= magnitude
-                vecs.append([0, -magnitude])
-            elif(direction == "4"):
-                components[0] -= magnitude
-                vecs.append([-magnitude, 0])
-        else:
-            angle = input("Fill in the blank: ____ degrees _____ of _____\nWhat is the angle?\n")
-            direction = int(input("Fill in the blank: " + angle + " degrees _____ of _____\nWhat is the direction?\n1. North\n2. East\n3. South\n4. West\n"))
-            if(direction == 1):
-                dirname = "North"
-            elif(direction == 2):
-                dirname = "East"
-            elif(direction == 3):
-                dirname = "South"
-            elif(direction == 4):
-                dirname = "West"
-            
-            axis = int(input("Fill in the blank: " + angle + " degrees " + dirname + " of _____\nWhat is the base axis?\n1. North\n2. East\n3. South\n4. West\n"))
-            angle = float(angle)
 
+    while True:
+        col = colors[cur_vec]
+
+        clear_cartesian()
+
+        text_box("WHAT IS THE LENGTH OF THE VECTOR?", 0, col)
+        mag = float(get_numeric_input_str(1, col))
+
+        clear_text_box()
+        text_box("DOES THE ANGLE LIE ON AN AXIS?", 0, col)
+        on_axis = yes_no_sel(1, col)
+
+        if(not on_axis):
+            clear_text_box()
+            text_box("WHAT IS THE ANGLE OF THE VECTOR?", 0, col)
+            angle = float(get_numeric_input_str(1, col))
+
+        clear_text_box()
+        text_box("CHOOSE THE INITIAL AXIS", 0, col)
+        axis = 1
+        while True:
+            clear_cartesian()
+
+            ti_draw.set_color(*col)
+            if(axis == 1):
+                ti_draw.fill_rect(158, 15, 3, 79)
+            if(axis == 2):
+                ti_draw.fill_rect(161, 94, 79, 3)
+            if(axis == 3):
+                ti_draw.fill_rect(158, 97, 3, 79)
+            if(axis == 4):
+                ti_draw.fill_rect(79, 94, 79, 3)
+
+            pressed = get_input()
+            if(pressed == "UP" or pressed == "RIGHT"):
+                axis += 1
+                if(axis > 4):
+                    axis = 1
+            elif(pressed == "DOWN" or pressed == "LEFT"):
+                axis -= 1
+                if(axis < 1):
+                    axis = 4
+            elif(pressed == "ENTER"):
+                break
+
+        if(on_axis):
+            if(axis == 1):
+                vec = [0, mag]
+            elif(axis == 2):
+                vec = [mag, 0]
+            elif(axis == 3):
+                vec = [0, -mag]
+            elif(axis == 4):
+                vec = [-mag, 0]
+        else:
             if(axis == 1 or axis == 3):
                 angle = 90.0 - angle
 
-            angle = math.radians(angle)
+            text_box("CHOOSE A QUADRANT", 0, col)
+            quadrant = 1
+            while True:
+                clear_cartesian()
 
-            xcomp = magnitude * math.cos(angle)
-            ycomp = magnitude * math.sin(angle)
+                ti_draw.set_color(*col)
+                if(quadrant == 1):
+                    ti_draw.fill_rect(160, 15, 80, 80)
+                elif(quadrant == 2):
+                    ti_draw.fill_rect(79, 15, 80, 80)
+                elif(quadrant == 3):
+                    ti_draw.fill_rect(79, 96, 80, 80)
+                elif(quadrant == 4):
+                    ti_draw.fill_rect(160, 96, 80, 80)
 
-            if(axis == 4 or direction == 4):
-                xcomp = -xcomp
-            if(axis == 3 or direction == 3):
-                ycomp = -ycomp
-            components[0] += xcomp
-            components[1] += ycomp
-            vecs.append([xcomp, ycomp])
+                pressed = get_input()
+                if(pressed == "UP" or pressed == "RIGHT"):
+                    quadrant += 1
+                    if(quadrant > 4):
+                        quadrant = 1
+                elif(pressed == "DOWN" or pressed == "LEFT"):
+                    quadrant -= 1
+                    if(quadrant < 1):
+                        quadrant = 4
+                elif(pressed == "ENTER"):
+                    if(quadrant == 2):
+                        angle = 180 - angle
+                    elif(quadrant == 3):
+                        angle += 180
+                    elif(quadrant == 4):
+                        angle = 360 - angle
+                    break
+            vec = [mag * math.cos(math.radians(angle)), mag * math.sin(math.radians(angle))]
 
-        if(abs(components[0]) > largest_components[0]):
-            largest_components[0] = abs(components[0])
-        if(abs(components[1]) > largest_components[1]):
-            largest_components[1] = abs(components[1])
+        clear_cartesian()
+        clear_text_box()
+
+        ti_draw.set_color(*col)
+        draw_vec([0, 0], vec, 80 / (abs(vec[0]) if abs(vec[0]) > abs(vec[1]) else abs(vec[1])))
+
+        text_box("DOES THIS LOOK CORRECT?", 0, col)
+        if(yes_no_sel(1, col)):
+            vecs.append(vec)
+            components[0] += vec[0]
+            components[1] += vec[1]
+
+            if(abs(components[0]) > largest_components[0]):
+                largest_components[0] = abs(components[0])
+            if(abs(components[1]) > largest_components[1]):
+                largest_components[1] = abs(components[1])
+            cur_vec += 1
+
+        clear_text_box()
+        if(len(vecs) > 1):
+            text_box("IS THIS THE FINAL VECTOR?", 0, col)
+            if(yes_no_sel(1, col)):
+                break
+        clear_text_box()
         
-        if(first_vec):
-            first_vec = False
-        else:
-            last_vec = input("Is that the last vector?\n1. Yes\n2. No\n") == "1"
-
+    clear_cartesian()
     scalar_opts = [80 / largest_components[0], 80 / largest_components[1]]
 
     scalar = scalar_opts[0] if scalar_opts[0] < scalar_opts[1] else scalar_opts[1]
@@ -389,4 +552,4 @@ while(True):
             selected_vec += 1
             if(selected_vec > len(vecs) - 1):
                 selected_vec = 0
-    print("\n\n\n\n")
+        
