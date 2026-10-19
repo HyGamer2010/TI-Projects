@@ -552,4 +552,4 @@ while True:
             selected_vec += 1
             if(selected_vec > len(vecs) - 1):
                 selected_vec = 0
-        
+    clear_text_box()
