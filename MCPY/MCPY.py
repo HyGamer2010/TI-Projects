@@ -60,7 +60,7 @@ grounded = True
 vH = 0
 
 screen_x = 0
-screen_y = -7
+screen_y = -6
 
 prev_time = time.monotonic()
 time_counter = 0
@@ -108,6 +108,10 @@ def get_input():
 def get_ground_level(x):
     return int(3 * math.sin(x/4))
 
+def tree_leaves(x, y, tree_x, tree_y):
+    return (x <= tree_x + 2 and x >= tree_x - 2 and y >= tree_y - 4 and y <= tree_y - 3) or (y == tree_y - 5 and x <= tree_x + 1 and x >= tree_x - 1)
+
+
 def get_block(x, y):
     global cur_x
     global cur_y
@@ -122,14 +126,17 @@ def get_block(x, y):
     elif(y > ground_level):
         return 3
 
-    prev_closest_tree_x = x - (x % 12)
+    prev_closest_tree_x = x - (x % 18)
     prev_closest_tree_y = get_ground_level(prev_closest_tree_x) - 1
 
-    next_closest_tree_x = x + (12 - (x % 12))
+    next_closest_tree_x = x + (18 - (x % 18))
     next_closest_tree_y = get_ground_level(next_closest_tree_x) - 1
 
-    if((x <= prev_closest_tree_x + 2 and x >= prev_closest_tree_x - 2 and y >= prev_closest_tree_y - 4 and y <= prev_closest_tree_y - 3)):
+    if(tree_leaves(x, y, next_closest_tree_x, next_closest_tree_y) or tree_leaves(x, y, prev_closest_tree_x, prev_closest_tree_y)):
         return 6
+
+    if(x == prev_closest_tree_x and y <= prev_closest_tree_y and y >= prev_closest_tree_y - 2):
+        return 5
 
     return 4
 
@@ -150,7 +157,7 @@ def draw_tile(tile_index, x, y, draw_c = True):
 
 def draw_new_screen():
     for x in range(16):
-        for y in range(10):
+        for y in range(9):
             draw_tile(get_block(x + screen_x, y + screen_y), x, y)
 
 def move_player(x, y):
@@ -202,11 +209,11 @@ while True:
         time_counter -= time_between_frames
     prev_time = time.monotonic()
 
-    if(key == 26 and get_block(cur_x + 1, cur_y) == 4):
+    if(key == 26 and get_block(cur_x + 1, cur_y) == 4 and get_block(cur_x + 1, cur_y - 1) == 4):
         move_player(1, 0)
-    elif(key == 24 and get_block(cur_x - 1, cur_y) == 4):
+    elif(key == 24 and get_block(cur_x - 1, cur_y) == 4 and get_block(cur_x - 1, cur_y - 1) == 4):
         move_player(-1, 0)
-    elif(key == 25 and grounded):
+    elif(key == 25 and grounded and get_block(cur_x, cur_y - 2) == 4):
         move_player(0, -1)
         vH = -2
     elif(key == 73):
