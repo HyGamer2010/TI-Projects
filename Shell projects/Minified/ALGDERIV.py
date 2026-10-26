@@ -1,258 +1,292 @@
-z='acsc'
-y=range
-q=None
-p='='
-o='l'
-n='a'
-m='y'
-l='x'
+z='x'
+y='atan'
+x='asin'
+w='tan'
+v='cos'
+u='sin'
+t='y'
+s='='
+r='acot'
+q='acsc'
+p='&'
 k='asec'
 j='cot'
-i='&'
+i=False
 f='sec'
 e='csc'
-d=False
-a=''
-Y='e'
-V='log'
+a='e'
+Z=''
+W="'"
+T='log'
 S='('
-R='func'
 Q='0'
-P=')'
-O='-1'
+M=')'
+P='-1'
+O='func'
 N=int
 L='/'
-K='1'
+J='1'
 I='^'
 H='+'
 F=str
 E='-'
-D=type
+C=type
 B='*'
 class A:
-	val=a;children_nodes=[];abs_val=d
-	def __init__(A,val,children,abs_val=d):A.val=val;A.children_nodes=children;A.abs_val=abs_val
+	val=Z;children_nodes=[];abs_val=i
+	def __init__(A,val,children,abs_val=i):A.val=val;A.children_nodes=children;A.abs_val=abs_val
 	def __str__(G):
-		O=' ';M=G.children_nodes[0];N=G.children_nodes[1];C=F(M);J=F(N)
+		Q=' ';N=G.children_nodes[0];P=G.children_nodes[1];D=F(N);K=F(P)
 		if G.val==L:
-			if D(M)is not F:C=S+C+P
-			if D(N)is not F:J=S+J+P
+			if C(N)is not F:D=S+D+M
+			if C(P)is not F:K=S+K+M
 		elif G.val==B:
-			if D(M)is A:
-				if M.val==H or M.val==E:C=S+C+P
-			elif len(C.lstrip(E))==1:C=C.replace(K,a)
-			if D(N)is A:
-				if N.val==H or N.val==E:J=S+J+P
-				if D(M)is F:
-					if X(M):return C+J
-			elif D(N)is F:
-				if D(M)is A:
-					Q=M.children_nodes[1]
-					if D(Q)is A:
-						if Q.val==I:return C+' * '+J
-				if not N.lstrip(E).isdigit():return C+J
+			if C(N)is A:
+				if N.val==H or N.val==E:D=S+D+M
+			elif len(D.lstrip(E))==1:D=D.replace(J,Z)
+			if C(P)is A:
+				if P.val==H or P.val==E:K=S+K+M
+				if C(N)is F:
+					if X(N):return D+K
+			elif C(P)is F:
+				if C(N)is A:
+					R=N.children_nodes[1]
+					if C(R)is A:
+						if R.val==I:return D+' * '+K
+				if not P.lstrip(E).isdigit():return D+K
 		elif G.val==I or G.val==E:
-			if D(M)is A:C=S+C+P
-			if D(N)is A:J=S+J+P
-		elif G.val==R:return C+S+J+P
-		elif G.val==V:
-			if J==Y:return'ln('+C+P
-			else:return'log('+C+','+J+P
-		if not G.abs_val:return C+(O+G.val+O if G.val!=I else G.val)+J
-		else:return'| '+C+(O+G.val+O if G.val!=I else G.val)+J+' |'
-def X(x):return x.lstrip(E).isdigit()or x==Y or x==i
-r=S+input("Enter an equation. (Don't use the regular x. Use the x/y found by pressing alpha + sto->/1 respectively)\n").replace('**',I).replace(')(',B).replace('1/sin',e).replace('1/cos',f).replace('1/tan',j).replace('1/asin',z).replace('1/acos',k).replace('1/atan','acot').replace('pi',i)+P
-T=a
-b=a
-for J in r:
-	if(J.lstrip(E).isdigit()and not b.lstrip(E).isdigit()or b.lstrip(E).isdigit()and not J.lstrip(E).isdigit()or(J==l or J==m or J=='s'or J=='c'or J=='t'or J==n or J==o))and X(b)and J!=I and J!=H and J!=E and J!=B and J!=L and J!=P and J!=p:T+=B
-	T+=J;b=J
-T=T.split(p)
-for s in y(len(T)):T[s]=S+T[s]+P
-g=0
-C=0
-def G():global C;return T[g][C:C+1]
-def W(other_side=d):
-	global C;global g
+			if C(N)is A:D=S+D+M
+			if C(P)is A:K=S+K+M
+		elif G.val==O:return D+S+K+M
+		elif G.val==T:
+			if K==a:return'ln('+D+M
+			else:return'log('+D+','+K+M
+		if not G.abs_val:return D+(Q+G.val+Q if G.val!=I else G.val)+K
+		else:return'| '+D+(Q+G.val+Q if G.val!=I else G.val)+K+' |'
+def X(x):return x.lstrip(E).isdigit()or x==a or x==p
+R=Z
+Y=Z
+def A0(equation_in):
+	C=equation_in;global R;global Y;R=Z;C=S+C.replace('**',I).replace(')(',B).replace('1/sin',e).replace('1/cos',f).replace('1/tan',j).replace('1/asin',q).replace('1/acos',k).replace('1/atan',r).replace('pi',p)+M
+	for A in C:
+		if(A.lstrip(E).isdigit()and not Y.lstrip(E).isdigit()or Y.lstrip(E).isdigit()and not A.lstrip(E).isdigit()or A.isalpha()and not Y.isalpha())and X(Y)and A!=I and A!=H and A!=E and A!=B and A!=L and A!=M and A!=s:R+=B
+		R+=A;Y=A
+	R=R.split(s)
+	for D in range(len(R)):R[D]=S+R[D]+M
+l=input("Enter an equation. (Don't use the regular x. Use the x/y found by pressing alpha + sto->/1 respectively)\n")
+AF=t in l
+A0(l)
+b=0
+D=0
+A7=[u,v,w,e,f,j,x,'acos',y,q,k,r,T,'ln']
+m=[]
+c={}
+def G():global D;return R[b][D:D+1]
+def U(other_side=i):
+	global D;global b
 	if other_side:
-		if p in r:C=0;g+=1
+		if s in l:D=0;b+=1
 		else:return
-	B=t()
-	while G()==H or G()==E:D=G();C+=1;F=t();B=A(D,[B,F])
+	B=A1()
+	while G()==H or G()==E:C=G();D+=1;F=A1();B=A(C,[B,F])
 	return B
-def t():
-	global C;D=u()
-	while G()==B or G()==L:E=G();C+=1;F=u();D=A(E,[D,F])
-	return D
-def u():
-	global C;B=v()
-	if G()==I:D=G();C+=1;E=v();B=A(D,[B,E])
+def A1():
+	global D;C=A2()
+	while G()==B or G()==L:E=G();D+=1;F=A2();C=A(E,[C,F])
+	return C
+def A2():
+	global D;B=A3()
+	if G()==I:C=G();D+=1;E=A3();B=A(C,[B,E])
 	return B
-def v():
-	global C;B=a
+def A3():
+	global D;B=Z
 	if X(G()):
-		while X(G()):B+=G();C+=1
+		while X(G()):B+=G();D+=1
 		return B
-	if G()==l or G()==m:B+=G();C+=1;return B
-	I=[n,'s','c','t'];E=G()
-	if E in I:
-		for L in y(4 if E==n else 2 if E==o else 3):B+=G();C+=1
-		C+=1;return A(R,[B,W()])
-	if E==o:
-		C+=1
-		if G()=='n':C+=2;F=W();return A(V,[F,Y])
-		if G()=='o':C+=3;F=W();C+=1;J=W();return A(V,[F,J])
+	if G()==z or G()==t:B+=G();D+=1;return B
+	H=G()
+	if H.isalpha():
+		while G().isalpha():B+=G();D+=1
+		D+=1
+		if B not in m and B not in A7:m.append(B)
+		if B==T:E=U();D+=1;I=U();return A(T,[E,I])
+		elif B=='ln':E=U();return A(T,[E,a])
+		else:return A(O,[B,U()])
 	if G()==S or G()=='|':
-		K=G()=='|';C+=1;H=W()
-		if D(H)is A:H.abs_val=K
-		C+=1;return H
-def M(node_o):
-	h='atan';g='asin';d='tan';c='cos';b='sin';U='2';C=node_o
-	if D(C)is A:
-		if C.val==H or C.val==E:return A(C.val,[M(C.children_nodes[0]),M(C.children_nodes[1])])
-		elif C.val==B:S=C.children_nodes[0];Z=M(S);T=C.children_nodes[1];a=M(T);return A(H,[A(B,[Z,T]),A(B,[S,a])])
-		elif C.val==L:S=C.children_nodes[0];Z=M(S);T=A(I,[C.children_nodes[1],O]);a=M(T);return A(H,[A(B,[Z,T]),A(B,[S,a])])
-		elif C.val==I:
-			if D(C.children_nodes[1])is F:
-				if X(C.children_nodes[1]):
-					P=C.children_nodes[1]
-					if D(P)is A:
-						if P.val==L:W=P.children_nodes;W[0]=F(N(W[0])-N(W[1]));P=A(L,*W)
-					else:P=F(N(P)-1)
-					return A(B,[A(B,[C.children_nodes[1],A(I,[C.children_nodes[0],P])]),M(C.children_nodes[0])])
-				else:return A(B,[A(B,[A(V,[C.children_nodes[0],Y]),A(I,[C.children_nodes[0],C.children_nodes[1]])]),M(C.children_nodes[1])])
-			else:return A(B,[A(B,[A(V,[C.children_nodes[0],Y]),A(I,[C.children_nodes[0],C.children_nodes[1]])]),M(C.children_nodes[1])])
-		elif C.val==R:
-			J=C.children_nodes[0];G=C.children_nodes[1]
-			if J==b:C=A(R,[c,G])
-			elif J==c:C=A(B,[O,A(R,[b,G])])
-			elif J==d:C=A(I,[A(R,[f,G]),U])
-			elif J==e:C=A(B,[O,A(B,[A(R,[e,G]),A(R,[j,G])])])
-			elif J==f:C=A(B,[A(R,[f,G]),A(R,[d,G])])
-			elif J==j:C=A(B,[O,A(I,[A(R,[e,G]),U])])
-			elif J==g or J=='acos':return A(B,[K if J==g else O,A(L,[M(G),A(I,[A(E,[K,A(I,[G,2])]),A(L,[K,U])])])])
-			elif J==k or J==z:return A(B,[K if J==k else O,A(L,[M(G),A(B,[A(H,[Q,G],True),A(I,[A(E,[A(I,[G,U]),K]),A(L,[K,U])])])])])
-			elif J==h or J=='acot':return A(B,[K if J==h else O,A(L,[M(G),A(H,[K,A(I,[G,2])])])])
-			return A(B,[C,M(G)])
-		elif C.val==V:return A(L,[M(C.children_nodes[0]),A(B,[A(V,[C.children_nodes[1],Y]),C.children_nodes[0]])])
-	elif C==l or C==m:return C+"'"
-	elif X(C):return Q
-def c(node_o,negative=d):
-	F=negative;C=node_o
-	if D(C)is A:
-		if C.val==H or C.val==E:G=[];G.extend(c(C.children_nodes[0],F));G.extend(c(C.children_nodes[1],C.val==E and not F or C.val==H and F));return G
-		elif not F:return[C]
-		else:return[A(B,[O,C])]
-	elif not F:return[C]
-	else:return[A(B,[O,C])]
-def U(node_o):
+		J=G()=='|';D+=1;F=U()
+		if C(F)is A:F.abs_val=J
+		D+=1;return F
+def K(node_o):
+	V='2';D=node_o
+	if C(D)is A:
+		if D.val==H or D.val==E:return A(D.val,[K(D.children_nodes[0]),K(D.children_nodes[1])])
+		elif D.val==B:S=D.children_nodes[0];Z=K(S);U=D.children_nodes[1];b=K(U);return A(H,[A(B,[Z,U]),A(B,[S,b])])
+		elif D.val==L:S=D.children_nodes[0];Z=K(S);U=A(I,[D.children_nodes[1],P]);b=K(U);return A(H,[A(B,[Z,U]),A(B,[S,b])])
+		elif D.val==I:
+			if C(D.children_nodes[1])is F:
+				if X(D.children_nodes[1]):
+					R=D.children_nodes[1]
+					if C(R)is A:
+						if R.val==L:Y=R.children_nodes;Y[0]=F(N(Y[0])-N(Y[1]));R=A(L,*Y)
+					else:R=F(N(R)-1)
+					return A(B,[A(B,[D.children_nodes[1],A(I,[D.children_nodes[0],R])]),K(D.children_nodes[0])])
+				else:return A(B,[A(B,[A(T,[D.children_nodes[0],a]),A(I,[D.children_nodes[0],D.children_nodes[1]])]),K(D.children_nodes[1])])
+			else:return A(B,[A(B,[A(T,[D.children_nodes[0],a]),A(I,[D.children_nodes[0],D.children_nodes[1]])]),K(D.children_nodes[1])])
+		elif D.val==O:
+			M=D.children_nodes[0];G=D.children_nodes[1]
+			if M==u:D=A(O,[v,G])
+			elif M==v:D=A(B,[P,A(O,[u,G])])
+			elif M==w:D=A(I,[A(O,[f,G]),V])
+			elif M==e:D=A(B,[P,A(B,[A(O,[e,G]),A(O,[j,G])])])
+			elif M==f:D=A(B,[A(O,[f,G]),A(O,[w,G])])
+			elif M==j:D=A(B,[P,A(I,[A(O,[e,G]),V])])
+			elif M==x or M=='acos':return A(B,[J if M==x else P,A(L,[K(G),A(I,[A(E,[J,A(I,[G,2])]),A(L,[J,V])])])])
+			elif M==k or M==q:return A(B,[J if M==k else P,A(L,[K(G),A(B,[A(H,[Q,G],True),A(I,[A(E,[A(I,[G,V]),J]),A(L,[J,V])])])])])
+			elif M==y or M==r:return A(B,[J if M==y else P,A(L,[K(G),A(H,[J,A(I,[G,2])])])])
+			else:D=A(O,[M+W,G])
+			return A(B,[D,K(G)])
+		elif D.val==T:return A(L,[K(D.children_nodes[0]),A(B,[A(T,[D.children_nodes[1],a]),D.children_nodes[0]])])
+	elif D==z or D==t:return D+W
+	elif X(D):return Q
+def g(node_o,negative=i):
+	F=negative;D=node_o
+	if C(D)is A:
+		if D.val==H or D.val==E:G=[];G.extend(g(D.children_nodes[0],F));G.extend(g(D.children_nodes[1],D.val==E and not F or D.val==H and F));return G
+		elif not F:return[D]
+		else:return[A(B,[P,D])]
+	elif not F:return[D]
+	else:return[A(B,[P,D])]
+def V(node_o):
 	B=node_o
-	if D(B)is A:C=U(B.children_nodes[0]);E=U(B.children_nodes[1]);return C or E
-	elif D(B)is F:return B=="y'"
-def h(node_o):
+	if C(B)is A:D=V(B.children_nodes[0]);E=V(B.children_nodes[1]);return D or E
+	elif C(B)is F:return B=="y'"
+def n(node_o):
 	B=node_o
-	if D(B)is A:C=h(B.children_nodes[0]);E=h(B.children_nodes[1]);B.children_nodes[0]=C;B.children_nodes[1]=E;return B
-	elif D(B)is F:
-		if B=="y'":return K
+	if C(B)is A:D=n(B.children_nodes[0]);E=n(B.children_nodes[1]);B.children_nodes[0]=D;B.children_nodes[1]=E;return B
+	elif C(B)is F:
+		if B=="y'":return J
 		else:return B
-def A0(left,right):
-	I=Q;J=Q;K=c(left)
+def o(node_o,val):
+	D=val;B=node_o
+	if C(B)is A:E=o(B.children_nodes[0],D);F=o(B.children_nodes[1],D);B.children_nodes[0]=E;B.children_nodes[1]=F;return B
+	elif B==z:return D
+	else:return B
+def A4(func,node_o):
+	D=func;B=node_o
+	if W not in D:E=c[D][0]
+	else:E=c[D.rstrip(W)][1]
+	if C(B)is A:
+		if B.val==O and B.children_nodes[0].rstrip(W)in c:B=A4(B.children_nodes[0],B.children_nodes[1])
+	return o(E,B)
+def A8(left,right):
+	I=Q;J=Q;K=g(left)
 	for G in K:
-		if U(G):
-			C=G.children_nodes[0];F=G.children_nodes[1]
+		if V(G)and C(G)is A:
+			D=G.children_nodes[0];F=G.children_nodes[1]
 			if G.val==B:
-				if D(C)is A and U(C):
-					if C.val==H:K.extend([A(B,[C.children_nodes[0],F]),A(B,[C.children_nodes[1],F])]);continue
-					if C.val==E:K.extend([A(B,[C.children_nodes[0],F]),A(B,[O,A(B,[C.children_nodes[1],F])])]);continue
-				elif D(F)is A and U(F):
-					if F.val==H:K.extend([A(B,[F.children_nodes[0],C]),A(B,[F.children_nodes[1],C])]);continue
-					elif F.val==E:K.extend([A(B,[F.children_nodes[0],C]),A(B,[O,A(B,[F.children_nodes[1],C])])]);continue
+				if C(D)is A and V(D):
+					if D.val==H:K.extend([A(B,[D.children_nodes[0],F]),A(B,[D.children_nodes[1],F])]);continue
+					if D.val==E:K.extend([A(B,[D.children_nodes[0],F]),A(B,[P,A(B,[D.children_nodes[1],F])])]);continue
+				elif C(F)is A and V(F):
+					if F.val==H:K.extend([A(B,[F.children_nodes[0],D]),A(B,[F.children_nodes[1],D])]);continue
+					elif F.val==E:K.extend([A(B,[F.children_nodes[0],D]),A(B,[P,A(B,[F.children_nodes[1],D])])]);continue
 			I=A(H,[I,G])
 		else:J=A(E,[J,G])
-	M=c(right)
+	M=g(right)
 	for G in M:
-		if U(G):
-			C=G.children_nodes[0];F=G.children_nodes[1]
+		if V(G)and C(G)is A:
+			D=G.children_nodes[0];F=G.children_nodes[1]
 			if G.val==B:
-				if D(C)is A and U(C):
-					if C.val==H:M.extend([A(B,[C.children_nodes[0],F]),A(B,[C.children_nodes[1],F])]);continue
-					if C.val==E:M.extend([A(B,[C.children_nodes[0],F]),A(B,[O,A(B,[C.children_nodes[1],F])])]);continue
-				elif D(F)is A and U(F):
-					if F.val==H:M.extend([A(B,[F.children_nodes[0],C]),A(B,[F.children_nodes[1],C])]);continue
-					elif F.val==E:M.extend([A(B,[F.children_nodes[0],C]),A(B,[O,A(B,[F.children_nodes[1],C])])]);continue
+				if C(D)is A and V(D):
+					if D.val==H:M.extend([A(B,[D.children_nodes[0],F]),A(B,[D.children_nodes[1],F])]);continue
+					if D.val==E:M.extend([A(B,[D.children_nodes[0],F]),A(B,[P,A(B,[D.children_nodes[1],F])])]);continue
+				elif C(F)is A and V(F):
+					if F.val==H:M.extend([A(B,[F.children_nodes[0],D]),A(B,[F.children_nodes[1],D])]);continue
+					elif F.val==E:M.extend([A(B,[F.children_nodes[0],D]),A(B,[P,A(B,[F.children_nodes[1],D])])]);continue
 			I=A(E,[I,G])
 		else:J=A(H,[J,G])
-	I=h(I);return A(L,[J,I])
-def w(node_o):
-	C=node_o
-	if D(C)is not F and D(C)is not A:I=C[0];C=C[1]
+	I=n(I);return A(L,[J,I])
+def A5(node_o):
+	D=node_o
+	if C(D)is not F and C(D)is not A:I=D[0];D=D[1]
 	else:I=[]
-	if D(C)is A:
-		if C.val==B:
-			G=w(C.children_nodes[0]);H=w(C.children_nodes[1]);J=[]
-			if D(G)is not F and D(G)is not A:I.extend(G[0]);J.append(G[1])
+	if C(D)is A:
+		if D.val==B:
+			G=A5(D.children_nodes[0]);H=A5(D.children_nodes[1]);J=[]
+			if C(G)is not F and C(G)is not A:I.extend(G[0]);J.append(G[1])
 			else:J.append(G)
-			if D(H)is not F and D(H)is not A:I.extend(H[0]);J.append(H[1])
+			if C(H)is not F and C(H)is not A:I.extend(H[0]);J.append(H[1])
 			else:J.append(H)
-			if D(G)is F:
+			if C(G)is F:
 				if G.lstrip(E).isdigit():I.append(G)
-			if D(H)is F:
+			if C(H)is F:
 				if H.lstrip(E).isdigit():I.append(H)
 			return I,A(B,*J)
-		else:return C
-	else:return C
-def Z(node_o):
-	J=node_o
-	if D(J)is A:
-		C=Z(J.children_nodes[0]);G=Z(J.children_nodes[1])
-		if J.val==B:
-			if C==Q or G==Q:return Q
-			elif G==K:return C
-			elif C==K:return G
-			elif D(C)is F and D(G)is F:
-				if C.lstrip(E).isdigit()and G.lstrip(E).isdigit():return F(N(C)*N(G))
-			elif D(C)is A and D(G)is F:
+		else:return D
+	else:return D
+def d(node_o):
+	K=node_o
+	if C(K)is A:
+		D=d(K.children_nodes[0]);G=d(K.children_nodes[1])
+		if K.val==B:
+			if D==Q or G==Q:return Q
+			elif G==J:return D
+			elif D==J:return G
+			elif C(D)is F and C(G)is F:
+				if D.lstrip(E).isdigit()and G.lstrip(E).isdigit():return F(N(D)*N(G))
+			elif C(D)is A and C(G)is F:
 				if G.lstrip(E).isdigit():
-					if C.val==B:
-						M=C.children_nodes[1]
-						if D(M)is F:
-							if M.lstrip(E).isdigit():G=F(N(M)*N(G));C=C.children_nodes[0]
-					elif C.val==L:
-						M=C.children_nodes[0]
-						if D(M)is F:
-							if M.lstrip(E).isdigit():return A(H,[A(L,[F(N(M)*N(G)),C.children_nodes[1]]),0])
-			elif D(C)is F and D(G)is A:
-				if C.lstrip(E).isdigit():
+					if D.val==B:
+						M=D.children_nodes[1]
+						if C(M)is F:
+							if M.lstrip(E).isdigit():G=F(N(M)*N(G));D=D.children_nodes[0]
+					elif D.val==L:
+						M=D.children_nodes[0]
+						if C(M)is F:
+							if M.lstrip(E).isdigit():return A(H,[A(L,[F(N(M)*N(G)),D.children_nodes[1]]),0])
+			elif C(D)is F and C(G)is A:
+				if D.lstrip(E).isdigit():
 					if G.val==B or G.val==L:
-						P=J;R=G;M=G.children_nodes[0];S=G.children_nodes[1]
-						if D(M)is F:
+						O=K;R=G;M=G.children_nodes[0];S=G.children_nodes[1]
+						if C(M)is F:
 							if M.lstrip(E).isdigit():
-								if P.val==B and R.val==B:C=F(N(M)*N(C));G=S
-		elif J.val==L:
-			if G==K or C==Q:return C
-		elif J.val==H or J.val==E:
-			if G==Q:return C
-			elif C==Q:
-				if J.val==H:return G
-				else:return A(B,[O,G])
-			elif D(C)is F and D(G)is F:
-				if C.lstrip(E).isdigit()and G.lstrip(E).isdigit():return F(N(C)+N(G)if J.val==H else N(C)-N(G))
-		elif J.val==I:
-			if G==K:return C
-			elif G==Q:return K
-		elif J.val==V:
-			if C==G:return K
-			if C==K:return Q
-		J.children_nodes=[C,G]
-	elif J=="x'":return K
-	return J
-def A1(left,right):
-	B=right;A=left;A=Z(A)
-	if B==q:return A
-	else:B=Z(B);return"y' = "+F(Z(A0(A,B)))
-A2=W()
-A3=M(A2)
-x=W(True)
-A4=M(x)if x!=q else q
-A5=F(A1(A3,A4)).replace(i,'pi')
-print(A5)
+								if O.val==B and R.val==B:D=F(N(M)*N(D));G=S
+		elif K.val==L:
+			if G==J or D==Q:return D
+		elif K.val==H or K.val==E:
+			if G==Q:return D
+			elif D==Q:
+				if K.val==H:return G
+				else:return A(B,[P,G])
+			elif C(D)is F and C(G)is F:
+				if D.lstrip(E).isdigit()and G.lstrip(E).isdigit():return F(N(D)+N(G)if K.val==H else N(D)-N(G))
+		elif K.val==I:
+			if G==J:return D
+			elif G==Q:return J
+		elif K.val==T:
+			if D==G:return J
+			if D==J:return Q
+		K.children_nodes=[D,G]
+	elif K=="x'":return J
+	return K
+def A9(left,right):
+	B=right;A=left;A=d(A)
+	if B==None:return A
+	else:B=d(B);AA();A=h(A);B=h(B);return"y' = "+F(d(A8(A,B)))
+def h(node_o):
+	B=node_o
+	if C(B)is A:
+		if B.val==O:
+			D=B.children_nodes[0].rstrip(W)
+			if D.rstrip(W)in c:return A4(D,B.children_nodes[1])
+		E=h(B.children_nodes[0]);F=h(B.children_nodes[1]);B.children_nodes[0]=E;B.children_nodes[1]=F;return B
+	else:return B
+def AA():
+	global R;global D;global b
+	for A in m:D=0;b=0;A0(input('Input the function:\n'+A+'(x) = '));B=U();C=K(B);c[A]=[B,C]
+AB=U()
+AC=K(AB)
+A6=U(True)
+AD=K(A6)if A6!=None else None
+AE=F(A9(AC,AD)).replace(p,'pi')
+print(AE)
