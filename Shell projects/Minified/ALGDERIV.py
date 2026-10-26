@@ -69,7 +69,7 @@ Y=Z
 def A0(equation_in):
 	C=equation_in;global R;global Y;R=Z;C=S+C.replace('**',I).replace(')(',B).replace('1/sin',e).replace('1/cos',f).replace('1/tan',j).replace('1/asin',q).replace('1/acos',k).replace('1/atan',r).replace('pi',p)+M
 	for A in C:
-		if(A.lstrip(E).isdigit()and not Y.lstrip(E).isdigit()or Y.lstrip(E).isdigit()and not A.lstrip(E).isdigit()or A.isalpha()and not Y.isalpha())and X(Y)and A!=I and A!=H and A!=E and A!=B and A!=L and A!=M and A!=s:R+=B
+		if(A.lstrip(E).isdigit()and not Y.lstrip(E).isdigit()or Y.lstrip(E).isdigit()and not A.lstrip(E).isdigit()or A.isalpha()and not Y.isalpha())and X(Y)and A!=I and A!=H and A!=E and A!=B and A!=L and A!=M and A!=s and A!=',':R+=B
 		R+=A;Y=A
 	R=R.split(s)
 	for D in range(len(R)):R[D]=S+R[D]+M
