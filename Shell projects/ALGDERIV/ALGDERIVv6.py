@@ -24,6 +24,8 @@ class node:
             if(type(left) is node):
                 if(left.val == "+" or left.val == "-"):
                     l_out = "(" + l_out + ")"
+            elif(len(l_out.lstrip("-")) == 1):
+                l_out = l_out.replace("1", "")
             if(type(right) is node):
                 if(right.val == "+" or right.val == "-"):
                     r_out = "(" + r_out + ")"
@@ -59,19 +61,19 @@ class node:
 def is_const(x:str):
     return x.lstrip("-").isdigit() or x == "e" or x == "&"
 
-#equation_in = "(" + input("Enter an equation. (Don't use the regular x. Use the x/y found by pressing alpha + sto->/1 respectively)\n").replace("**", "^").replace(")(", "*").replace("1/sin", "csc").replace("1/cos", "sec").replace("1/tan", "cot").replace("1/asin", "acsc").replace("1/acos", "asec").replace("1/atan", "acot").replace("pi", "&") + ")"
-equation_in = "10^(3y^2+5y)"
+equation_in = "(" + input("Enter an equation. (Don't use the regular x. Use the x/y found by pressing alpha + sto->/1 respectively)\n").replace("**", "^").replace(")(", "*").replace("1/sin", "csc").replace("1/cos", "sec").replace("1/tan", "cot").replace("1/asin", "acsc").replace("1/acos", "asec").replace("1/atan", "acot").replace("pi", "&") + ")"
+#equation_in = "tan(x*y)+x^2*y^2=2x^2+3x"
 
 equation = ""
 prev_c = ""
 for c in equation_in:
-    if(((c.lstrip("-").isdigit() and not prev_c.lstrip("-").isdigit()) or (prev_c.lstrip("-").isdigit() and not c.lstrip("-").isdigit()) or (c == "x" or c == "y" or c == "s" or c == "c" or c == "t" or c == "a" or c == "l")) and is_const(prev_c) and c != "^" and c != "+" and c != "-" and c != "*" and c != "/" and c != ")"):
+    if(((c.lstrip("-").isdigit() and not prev_c.lstrip("-").isdigit()) or (prev_c.lstrip("-").isdigit() and not c.lstrip("-").isdigit()) or (c == "x" or c == "y" or c == "s" or c == "c" or c == "t" or c == "a" or c == "l")) and is_const(prev_c) and c != "^" and c != "+" and c != "-" and c != "*" and c != "/" and c != ")" and c != "="):
         equation += "*"
     equation += c
     prev_c = c
-print(equation)
-
 equation = equation.split("=")
+for i in range(len(equation)):
+    equation[i] = "(" + equation[i] + ")"
 side = 0
 
 current_char = 0
@@ -82,8 +84,10 @@ def get_char():
 
 def parse_expression(other_side = False):
     global current_char
+    global side
     if(other_side):
         if("=" in equation_in):
+            current_char = 0
             side += 1
         else:
             return None
@@ -218,13 +222,13 @@ def find_derivative(node_o):
             elif(func == "cos"):
                 node_o = node("*", ["-1", node("func", ["sin", inside])])
             elif(func == "tan"):
-                node_o = node("^", [node("func", ["sec", inside]), 2])
+                node_o = node("^", [node("func", ["sec", inside]), "2"])
             elif(func == "csc"):
                 node_o = node("*", ["-1", node("*", [node("func", ["csc", inside]), node("func", ["cot", inside])])])
             elif(func == "sec"):
                 node_o = node("*", [node("func", ["sec", inside]), node("func", ["tan", inside])])
             elif(func == "cot"):
-                node_o = node("*", ["-1", node("^", [node("func", ["csc", inside]), 2])])
+                node_o = node("*", ["-1", node("^", [node("func", ["csc", inside]), "2"])])
             elif(func == "asin" or func == "acos"):
                 return(node("*", ["1" if func == "asin" else "-1", node("/", [find_derivative(inside), node("^", [node("-", ["1", node("^", [inside, 2])]), node("/", ["1", "2"])])])]))
             elif(func == "asec" or func == "acsc"):
@@ -243,21 +247,141 @@ def find_derivative(node_o):
         elif(is_const(node_o)):
             return "0"
 
+def get_terms(node_o, negative = False):
+    if(type(node_o) is node):
+        if(node_o.val == "+" or node_o.val == "-"):
+            terms = []
+            terms.extend(get_terms(node_o.children_nodes[0], negative))
+            terms.extend(get_terms(node_o.children_nodes[1], (node_o.val == "-" and not negative) or (node_o.val == "+" and negative)))
+
+            return terms
+        else:
+            if(not negative):
+                return [node_o]
+            else:
+                return [node("*", ["-1", node_o])]
+    else:
+        if(not negative):
+            return [node_o]
+        else:
+            return [node("*", ["-1", node_o])]
+
 def find_y_prime(node_o):
     if(type(node_o) is node):
         left = find_y_prime(node_o.children_nodes[0])
         right = find_y_prime(node_o.children_nodes[1])
 
-        return ((left, node_o.children_nodes[0]), (right, node_o.children_nodes[1]))
+        return left or right
     elif(type(node_o) is str):
         return node_o == "y'"
 
+def take_out_y_prime(node_o):
+    if(type(node_o) is node):
+        left = take_out_y_prime(node_o.children_nodes[0])
+        right = take_out_y_prime(node_o.children_nodes[1])
+
+        node_o.children_nodes[0] = left
+        node_o.children_nodes[1] = right
+
+        return node_o
+    elif(type(node_o) is str):
+        if(node_o == "y'"):
+            return "1"
+        else:
+            return node_o
 
 def solve_for_y_prime(left, right):
     new_left = "0"
     new_right = "0"
-    
 
+    left_terms = get_terms(left)
+    for term in left_terms:
+        if(find_y_prime(term)):
+            term_left = term.children_nodes[0]
+            term_right = term.children_nodes[1]
+            if(term.val == "*"):
+                if(type(term_left) is node and find_y_prime(term_left)):
+                    if(term_left.val == "+"):
+                        left_terms.extend([node("*", [term_left.children_nodes[0], term_right]),node("*", [term_left.children_nodes[1], term_right])])
+                        continue
+                    if(term_left.val == "-"):
+                        left_terms.extend([node("*", [term_left.children_nodes[0], term_right]),node("*", ["-1",node("*", [term_left.children_nodes[1], term_right])])])
+                        continue
+                elif(type(term_right) is node and find_y_prime(term_right)):
+                    if(term_right.val == "+"):
+                        left_terms.extend([node("*", [term_right.children_nodes[0], term_left]),node("*", [term_right.children_nodes[1], term_left])])
+                        continue
+                    elif(term_right.val == "-"):
+                        left_terms.extend([node("*", [term_right.children_nodes[0], term_left]),node("*", ["-1",node("*", [term_right.children_nodes[1], term_left])])])
+                        continue
+            new_left = node("+", [new_left, term])
+        else:
+            new_right = node("-", [new_right, term])
+
+    right_terms = get_terms(right)
+    for term in right_terms:
+        if(find_y_prime(term)):
+            term_left = term.children_nodes[0]
+            term_right = term.children_nodes[1]
+            if(term.val == "*"):
+                if(type(term_left) is node and find_y_prime(term_left)):
+                    if(term_left.val == "+"):
+                        right_terms.extend([node("*", [term_left.children_nodes[0], term_right]),node("*", [term_left.children_nodes[1], term_right])])
+                        continue
+                    if(term_left.val == "-"):
+                        right_terms.extend([node("*", [term_left.children_nodes[0], term_right]),node("*", ["-1",node("*", [term_left.children_nodes[1], term_right])])])
+                        continue
+                elif(type(term_right) is node and find_y_prime(term_right)):
+                    if(term_right.val == "+"):
+                        right_terms.extend([node("*", [term_right.children_nodes[0], term_left]),node("*", [term_right.children_nodes[1], term_left])])
+                        continue
+                    elif(term_right.val == "-"):
+                        right_terms.extend([node("*", [term_right.children_nodes[0], term_left]),node("*", ["-1",node("*", [term_right.children_nodes[1], term_left])])])
+                        continue
+            new_left = node("-", [new_left, term])
+        else:
+            new_right = node("+", [new_right, term])
+
+    new_left = take_out_y_prime(new_left)
+
+    return node("/", [new_right, new_left])
+
+def take_out_constants(node_o):
+    if(type(node_o) is not str and type(node_o) is not node):
+        const_list = node_o[0]
+        node_o = node_o[1]
+    else:
+        const_list = []
+    if(type(node_o) is node):
+        if(node_o.val == "*"):
+            left = take_out_constants(node_o.children_nodes[0])
+            right = take_out_constants(node_o.children_nodes[1])
+
+            final_nodes = []
+            if(type(left) is not str and type(left) is not node):
+                const_list.extend(left[0])
+                final_nodes.append(left[1])
+            else:
+                final_nodes.append(left)
+            if(type(right) is not str and type(right) is not node):
+                const_list.extend(right[0])
+                final_nodes.append(right[1])
+            else:
+                final_nodes.append(right)
+
+            if(type(left) is str):
+                if(left.lstrip("-").isdigit()):
+                    const_list.append(left)
+            if(type(right) is str):
+                if(right.lstrip("-").isdigit()):
+                    const_list.append(right)
+
+            return (const_list, node("*", *final_nodes))
+                        
+        else:
+            return node_o
+    else:
+        return node_o
 
 def simplify_node(node_o):
     if(type(node_o) is node):
@@ -270,9 +394,18 @@ def simplify_node(node_o):
                 return left
             elif(left == "1"):
                 return right
+            # else:
+            #     vals = take_out_constants(node("*", [left, right]))
+            #     final_const = 1
+            #     for const in vals[0]:
+            #         final_const *= int(const)
+
+            #     return node("*", [str(final_const), vals[1]])
+
             elif(type(left) is str and type(right) is str):
                 if(left.lstrip("-").isdigit() and right.lstrip("-").isdigit()):
                     return str(int(left) * int(right))
+                
             elif(type(left) is node and type(right) is str):
                 if(right.lstrip("-").isdigit()):
                     if(left.val == "*"):
@@ -286,21 +419,19 @@ def simplify_node(node_o):
                         if(type(child) is str):
                             if(child.lstrip("-").isdigit()):
                                 return node("+", [node("/", [str(int(child) * int(right)), left.children_nodes[1]]), 0])
+
             elif(type(left) is str and type(right) is node):
                 if(left.lstrip("-").isdigit()):
                     if(right.val == "*" or right.val == "/"):
-                        prev_child = node_o
+                        prev_gp = node_o
+                        prev_child = right
                         child = right.children_nodes[0]
-                        while type(child) is node:
-                            prev_child = prev_child.children_nodes[1 if prev_child == node_o else 0]
-                            child = child.children_nodes[0]
+                        other = right.children_nodes[1]
                         if(type(child) is str):
                             if(child.lstrip("-").isdigit()):
-                                if(prev_child.val == "*"):
+                                if(prev_gp.val == "*" and prev_child.val == "*"):
                                     left = str(int(child) * int(left))
-                                    prev_child.children_nodes[1 if prev_child == node_o else 0] = prev_child.children_nodes[0].children_nodes[1]
-                                else:
-                                    return node("/", [str(int(child) * int(left)), right.children_nodes[1]])
+                                    right = other
 
         elif(node_o.val == "/"):
             if(right == "1" or left == "0"):
@@ -309,7 +440,10 @@ def simplify_node(node_o):
             if(right == "0"):
                 return left
             elif(left == "0"):
-                return right
+                if(node_o.val == "+"):
+                    return right
+                else:
+                    return node("*", ["-1", right])
             elif(type(left) is str and type(right) is str):
                 if(left.lstrip("-").isdigit() and right.lstrip("-").isdigit()):
                     return str(int(left) + int(right) if node_o.val == "+" else int(left) - int(right))
@@ -328,18 +462,15 @@ def simplify_node(node_o):
         if(node_o == "x'"):
             return "1"
     return node_o
-            
-def simplify_side(e:node):
-    return simplify_node(e)
 
 def simplify(left, right):
-    left = simplify_side(left)
+    left = simplify_node(left)
     if(right == None):
         return left
     else:
-        right = simplify_side(right)
+        right = simplify_node(right)
 
-
+        return "y' = " + str(simplify_node(solve_for_y_prime(left, right)))
 
 expr_l = parse_expression()
 deriv_l = find_derivative(expr_l)
